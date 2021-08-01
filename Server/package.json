@@ -1,0 +1,8 @@
+{
+  "name": "Server",
+  "version": "1.0.0",
+  "description": "Server for costinghelper web",
+  "main": "server.js",
+  "author": "Rhett Owen",
+  "license": "MIT"
+}
