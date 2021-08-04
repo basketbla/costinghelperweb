@@ -96,11 +96,12 @@ const scrapeGoogle = async (item, numResults) => {
 			else {
 				shipping[i] = Number(shipping[i].substring(2, shipping[i].indexOf('s')-1).replace(','));
 			}
-			sellers[i] = sellers[i].substring(sellers[i].indexOf('from')+6)
+			sellers[i] = sellers[i].substring(sellers[i].indexOf('from')+5)
 		}
 
 		let sumReducer = (a, b) => a + b;
 		let avgPrice = (prices.reduce(sumReducer, 0) + shipping.reduce(sumReducer, 0)) / newNumResults;
+		let avgPriceNoShipping = prices.reduce(sumReducer, 0) / newNumResults;
 		let returnItems = [];
 
 		//Generate return items
@@ -117,6 +118,7 @@ const scrapeGoogle = async (item, numResults) => {
 			'item' : item,
 			'numResults' : newNumResults,
 			'avgPrice' : avgPrice,
+			'avgPriceNoShipping' : avgPriceNoShipping,
 			'itemList' : returnItems
 		})
 

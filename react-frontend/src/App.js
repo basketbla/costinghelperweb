@@ -57,11 +57,15 @@ function App() {
       if (chunk.value.numResults < numResults) {
         returnString += "Was only able to find " + chunk.value.numResults + " instead of " + numResults + "\n";
       }
-      returnString += "Average price: $" + Math.round(100*chunk.value.avgPrice)/100 + "\n\n";
+      returnString += "Average price (including shipping): $" + Math.round(100*chunk.value.avgPrice)/100 + "\n";
+      returnString += "Average price (excluding shipping): $" + Math.round(100*chunk.value.avgPriceNoShipping)/100 + "\n";
       for (let i = 0; i < chunk.value.numResults; i++) {
         returnString += "Item " + parseInt(i+1) + ": " + chunk.value.itemList[i].item + "\n";
+        returnString += "Seller: " + chunk.value.itemList[i].seller + "\n";
         returnString += "Price: $" + chunk.value.itemList[i].price + "\n";
-        returnString += "Shipping: $" + chunk.value.itemList[i].shipping + "\n\n";
+        returnString += "Shipping: $" + chunk.value.itemList[i].shipping + "\n";
+        let priceWithShippping = parseFloat(chunk.value.itemList[i].shipping) + parseFloat(chunk.value.itemList[i].price);
+        returnString += "Price (with shipping): $" + Math.round(100*priceWithShippping)/100 + "\n\n";
       }
       returnString += "\n";
     }
