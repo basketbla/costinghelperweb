@@ -196,7 +196,7 @@ function App() {
           same search, or requests to Google Shopping may fail completely. Also, searches are made with the location of 
           Fayetteville, AR (I think), so this should be the location that shipping prices are based on. 
           <br/><br/>
-          Please reach out (<a className="link" href="mailto:pokerrangecalculator@gmail.com">pokerrangecalculator@gmail.com</a>) if you have any problems or ideas for improving the site! Ideas could be something like
+          Please <a className="link" href="mailto:pokerrangecalculator@gmail.com">reach out</a> if you have any problems or ideas for improving the site! Ideas could be something like
           <br/><ul>
             <li>Support for CSV files for input/output</li>
             <li>Support for making searches with a different location</li>
