@@ -1,6 +1,5 @@
 import React, {
   useState,
-  useEffect
 } from 'react';
 import axios from 'axios';
 import Navbar from 'react-bootstrap/Navbar';
@@ -17,7 +16,6 @@ import './App.css';
 
 //Bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { stringify } from 'qs';
 
 function App() {
 
@@ -28,7 +26,7 @@ function App() {
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [scraping, setScraping] = useState(false);
 
-  const nodeUrl = 'http://localhost:8080';
+  const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
 
   //Actually sends post request to node server
   const doScraping = () => {
@@ -52,7 +50,9 @@ function App() {
   const downloadResults = () => {
     let returnString = "";
     for (let chunk of returnData) {
-      console.log(chunk);
+      if(chunk.value.item === "") {
+        continue;
+      }
       returnString += "Item: " + chunk.value.item + "\n";
       if (chunk.value.numResults < numResults) {
         returnString += "Was only able to find " + chunk.value.numResults + " instead of " + numResults + "\n";
@@ -76,6 +76,9 @@ function App() {
 
   //Reads input file and sets file text based on it
   const readFile = (e) => {
+    if(!!returnData) {
+      setReturnData(null);
+    }
     var reader = new FileReader();
     setFileUploadLoading(true);
     reader.onload = async (e) => {
@@ -103,6 +106,13 @@ function App() {
       </Dropdown.Item>
     )
   });
+
+  const handleCustomInput = (e) => {
+    if(!!returnData) {
+      setReturnData(null);
+    }
+    setFileText(e.target.value);
+  }
 
   return (
     <div>
@@ -137,7 +147,7 @@ function App() {
           <Collapse in={customOpen}>
             <Form.Group controlId="input-box">
               <Form.Label>Enter items here (one per line)</Form.Label>
-              <Form.Control as="textarea" rows={3} value={fileText} onChange={(e) => setFileText(e.target.value)}/>
+              <Form.Control as="textarea" rows={3} value={fileText} onChange={(e) => handleCustomInput(e)}/>
             </Form.Group>
           </Collapse>
           {
