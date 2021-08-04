@@ -58,7 +58,7 @@ function App() {
         returnString += "Was only able to find " + chunk.value.numResults + " instead of " + numResults + "\n";
       }
       returnString += "Average price (including shipping): $" + Math.round(100*chunk.value.avgPrice)/100 + "\n";
-      returnString += "Average price (excluding shipping): $" + Math.round(100*chunk.value.avgPriceNoShipping)/100 + "\n";
+      returnString += "Average price (excluding shipping): $" + Math.round(100*chunk.value.avgPriceNoShipping)/100 + "\n\n";
       for (let i = 0; i < chunk.value.numResults; i++) {
         returnString += "Item " + parseInt(i+1) + ": " + chunk.value.itemList[i].item + "\n";
         returnString += "Seller: " + chunk.value.itemList[i].seller + "\n";
