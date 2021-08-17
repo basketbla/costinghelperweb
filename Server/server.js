@@ -37,21 +37,6 @@ app.post('/scrape', (req, res) => {
 		})
 });
 
-app.get('/location', (req, res) => {
-	tempHelper('cane');
-})
-
-const tempHelper = async (item) => {
-	const { data } = await axios.get(
-		// 'https://www.google.com/search?psb=1&tbm=shop&q=' + item
-		'https://www.google.com/search?tbm=shop&q=' + item + '&hl=en&psb=1&ved=2ahUKEwiP1bX14pXyAhXjPgoDHQZTBcIQu-kFegQIABAT'
-	);
-	const $ = cheerio.load(data);
-	$('[class=CV7Lzb]').each((index, value) => {
-		res.send(value);
-	});
-}
-
 //Function that actually does the meat of the scraping. Returns an object 
 //containing details for one item
 const scrapeGoogle = async (item, numResults) => {
