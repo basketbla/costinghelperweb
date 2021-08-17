@@ -194,7 +194,7 @@ function App() {
           Since this site is making requests to Google Shopping, any variability in Google Shopping results will affect 
           the results you receive through Costing Helper. For example, Google Shopping may return different items for the 
           same search, or requests to Google Shopping may fail completely. Also, searches are made with the location of 
-          Fayetteville, AR (I think), so this should be the location that shipping prices are based on. 
+          Virginia, since that is where the server is located, so this should be the location that shipping prices are based on. 
           <br/><br/>
           Please <a className="link" href="mailto:pokerrangecalculator@gmail.com">reach out</a> if you have any problems or ideas for improving the site! Ideas could be something like
           <br/><ul>

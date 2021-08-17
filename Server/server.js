@@ -53,6 +53,10 @@ const scrapeGoogle = async (item, numResults) => {
 		let shipping = [];
 		let sellers = [];
 
+		$('[class=CV7Lzb]').each((index, value) => {
+			console.log(value);
+		});
+
 		//Scrape data
 		$('[class=rgHvZc]').each((index, value) => {
 			const itemName = $(value).text();
