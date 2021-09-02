@@ -11,9 +11,9 @@ import Collapse from 'react-bootstrap/Collapse';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
-import InputGroup from 'react-bootstrap/InputGroup';
+// import InputGroup from 'react-bootstrap/InputGroup';
 // import { PayPalButton } from "react-paypal-button-v2";
-import Paypal from "./Components/Paypal";
+// import Paypal from "./Components/Paypal";
 
 import './App.css';
 
