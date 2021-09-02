@@ -62,3 +62,18 @@
   margin-top: 2rem;
   width: 30vw;
 }
+
+#paypal-button {
+  width: 15rem;
+  height: 4rem;
+  background-color: #fec439;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#paypal-logo {
+  height: 2rem;
+}

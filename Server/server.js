@@ -4,6 +4,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const port =  process.env.PORT || 8080;
 var bodyParser = require('body-parser');
+const e = require('express');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,14 +18,14 @@ app.get('/', (req, res) => {
 	res.send('Server is running!');
 });
 
+//Endpoint that fires a scrapeGoogle for each item
 app.post('/scrape', (req, res) => {
 	let items = req.body.items;
 	let numResults = req.body.numResults;
-	let results = [];
 
 	let promises = [];
 	for(let item of items){
-		promises.push(scrapeGoogle(item, numResults));
+		promises.push(scrapeGoogle(item, numResults, req.body.includeTotal));
 	}
 
 	Promise.allSettled(promises)
@@ -37,9 +38,34 @@ app.post('/scrape', (req, res) => {
 		})
 });
 
+//Do a binary search w/requests to get number of results
+const getNumResults = async (item) => {
+	let l = 0;
+	let r = 1000;
+	while (l<r) {
+		let index = Math.floor((l+r)/2);
+		const { data } = await axios.get(
+			// 'https://www.google.com/search?psb=1&tbm=shop&q=' + item
+			'https://www.google.com/search?tbm=shop&q=' + item + '&hl=en&psb=1&ved=2ahUKEwiP1bX14pXyAhXjPgoDHQZTBcIQu-kFegQIABAT&start='+index
+		);
+		const $ = cheerio.load(data);
+		let len = $('[class=rgHvZc]').length;
+		if (len > 1) {
+			l =  index+1;
+		}
+		else if (len === 0) {
+			r = index-1;
+		}
+		else {
+			break;
+		}
+	}
+	return String(Math.floor((l+r)/2))
+}
+
 //Function that actually does the meat of the scraping. Returns an object 
 //containing details for one item
-const scrapeGoogle = async (item, numResults) => {
+const scrapeGoogle = async (item, numResults, includeTotal) => {
 	try {
 		const { data } = await axios.get(
 			// 'https://www.google.com/search?psb=1&tbm=shop&q=' + item
@@ -114,13 +140,25 @@ const scrapeGoogle = async (item, numResults) => {
 			});
 		}
 
-		return ({
-			'item' : item,
-			'numResults' : newNumResults,
-			'avgPrice' : avgPrice,
-			'avgPriceNoShipping' : avgPriceNoShipping,
-			'itemList' : returnItems
-		})
+		if (includeTotal) {
+			return ({
+				'item' : item,
+				'totalResults' : await getNumResults(item),
+				'numResults' : newNumResults,
+				'avgPrice' : avgPrice,
+				'avgPriceNoShipping' : avgPriceNoShipping,
+				'itemList' : returnItems
+			})
+		}
+		else {
+			return ({
+				'item' : item,
+				'numResults' : newNumResults,
+				'avgPrice' : avgPrice,
+				'avgPriceNoShipping' : avgPriceNoShipping,
+				'itemList' : returnItems
+			})
+		}
 
 	} catch (error) {
 		throw error;
