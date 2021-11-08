@@ -72,8 +72,8 @@ const getNumResults = async (item) => {
 			'https://www.google.com/search?tbm=shop&q=' + item + '&hl=en&psb=1&ved=2ahUKEwiP1bX14pXyAhXjPgoDHQZTBcIQu-kFegQIABAT&start='+index
 		);
 
-		// To limit frequency of requests (waits 1 second)
-		await delay(1000);
+		// To limit frequency of requests (waits .1 second)
+		await delay(100);
 
 		const $ = cheerio.load(data);
 		let len = $('[class=rgHvZc]').length;
@@ -110,8 +110,8 @@ const scrapeGoogle = async (item, numResults, includeTotal, includeStats, includ
 				'https://www.google.com/search?tbm=shop&q=' + item + '&hl=en&psb=1&ved=2ahUKEwiP1bX14pXyAhXjPgoDHQZTBcIQu-kFegQIABAT&start='+numGotten
 			);
 
-			// To limit frequency of requests (waits 1 second)
-			await delay(1000);
+			// To limit frequency of requests (waits .1 second)
+			await delay(100);
 
 			const $ = cheerio.load(data);
 
