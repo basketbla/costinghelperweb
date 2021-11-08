@@ -73,7 +73,7 @@ const getNumResults = async (item) => {
 		);
 
 		// To limit frequency of requests (waits 1 second)
-		delay(1000);
+		await delay(1000);
 
 		const $ = cheerio.load(data);
 		let len = $('[class=rgHvZc]').length;
@@ -111,7 +111,7 @@ const scrapeGoogle = async (item, numResults, includeTotal, includeStats, includ
 			);
 
 			// To limit frequency of requests (waits 1 second)
-			delay(1000);
+			await delay(1000);
 
 			const $ = cheerio.load(data);
 
