@@ -37,8 +37,8 @@ function App() {
   const [includeSS, setIncludeSS] = useState(false);
   const [googleError, setGoogleError] = useState(false);
 
-  // const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
-  const nodeUrl = 'http://localhost:8080';
+  const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
+  // const nodeUrl = 'http://localhost:8080';
 
   //Actually sends post request to node server
   const doScraping = () => {
