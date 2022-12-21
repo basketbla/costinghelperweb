@@ -37,7 +37,8 @@ function App() {
   const [includeSS, setIncludeSS] = useState(false);
   const [googleError, setGoogleError] = useState(false);
 
-  const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
+  const nodeUrl = 'https://costinghelper.uc.r.appspot.com/';
+  // const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
   // const nodeUrl = 'http://localhost:8080';
 
   //Actually sends post request to node server
@@ -52,7 +53,7 @@ function App() {
       includeCL: includeCL,
       includeSS: includeSS
     }).then(
-      function(value) {
+      function (value) {
         console.log(value.data[0]);
         if (value.data[0].status === 'rejected') {
           setGoogleError(true);
@@ -63,7 +64,7 @@ function App() {
         setReturnData(value.data);
         setScraping(false);
       },
-      function(error) {
+      function (error) {
         setScraping(false);
         alert(error + "\nPlease try again.");
       }
@@ -74,7 +75,7 @@ function App() {
   const downloadResults = () => {
     let returnString = "";
     for (let chunk of returnData) {
-      if(chunk.value.item === "") {
+      if (chunk.value.item === "") {
         continue;
       }
       returnString += "Item: " + chunk.value.item + "\n";
@@ -82,8 +83,8 @@ function App() {
         returnString += "Total number of Google Shopping Results: " + chunk.value.totalResults + "\n";
       }
       returnString += "Number of results: " + chunk.value.numResults + " (out of " + numResults + " requested)\n";
-      returnString += "Average price (including shipping): $" + Math.round(100*chunk.value.avgPrice)/100 + "\n";
-      returnString += "Average price (excluding shipping): $" + Math.round(100*chunk.value.avgPriceNoShipping)/100 + "\n";
+      returnString += "Average price (including shipping): $" + Math.round(100 * chunk.value.avgPrice) / 100 + "\n";
+      returnString += "Average price (excluding shipping): $" + Math.round(100 * chunk.value.avgPriceNoShipping) / 100 + "\n";
       if (includeStats) {
         returnString += "\n";
         returnString += "Other stats (including shipping):\n";
@@ -118,18 +119,18 @@ function App() {
       }
       returnString += "\n";
       for (let i = 0; i < chunk.value.numResults; i++) {
-        returnString += "Item " + parseInt(i+1) + ": " + chunk.value.itemList[i].item + "\n";
+        returnString += "Item " + parseInt(i + 1) + ": " + chunk.value.itemList[i].item + "\n";
         returnString += "Seller: " + chunk.value.itemList[i].seller + "\n";
         returnString += "Price: $" + chunk.value.itemList[i].price + "\n";
         returnString += "Shipping: $" + chunk.value.itemList[i].shipping + "\n";
         let priceWithShippping = parseFloat(chunk.value.itemList[i].shipping) + parseFloat(chunk.value.itemList[i].price);
-        returnString += "Price (with shipping): $" + Math.round(100*priceWithShippping)/100 + "\n\n";
+        returnString += "Price (with shipping): $" + Math.round(100 * priceWithShippping) / 100 + "\n\n";
       }
       returnString += "\n";
     }
 
     const element = document.createElement("a");
-    const file = new Blob([returnString], {type: 'text/plain'});
+    const file = new Blob([returnString], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = "costedItems.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
@@ -138,7 +139,7 @@ function App() {
 
   //Reads input file and sets file text based on it
   const readFile = (e) => {
-    if(!!returnData) {
+    if (!!returnData) {
       setReturnData(null);
     }
     var reader = new FileReader();
@@ -147,8 +148,8 @@ function App() {
       setFileText(e.target.result);
       setFileUploadLoading(false);
     };
-  
-    if(e.target.files.length > 0) {
+
+    if (e.target.files.length > 0) {
       reader.readAsText(e.target.files[0]);
     }
     else {
@@ -170,17 +171,17 @@ function App() {
   // });
 
   const handleCustomInput = (e) => {
-    if(!!returnData) {
+    if (!!returnData) {
       setReturnData(null);
     }
     setFileText(e.target.value);
   }
 
   const handleNumResults = (e) => {
-    if(!!returnData) {
+    if (!!returnData) {
       setReturnData(null);
     }
-    if (isNaN(e.target.value) || Number(e.target.value) < 1 ||  Number(e.target.value) > 1000) {
+    if (isNaN(e.target.value) || Number(e.target.value) < 1 || Number(e.target.value) > 1000) {
       setShowNumResultsError(true);
     }
     else {
@@ -204,129 +205,129 @@ function App() {
         <div className="upload">
           <Form.Group controlId="formFileLg" className="mb-3">
             <Form.Label>Choose a .txt file</Form.Label>
-            <Form.Control 
-              type="file" 
-              size="lg" 
+            <Form.Control
+              type="file"
+              size="lg"
               onChange={(e) => readFile(e)}
               accept=".txt"
-              />
+            />
           </Form.Group>
           {
-            fileUploadLoading ? 
+            fileUploadLoading ?
               <Spinner animation="border" variant="danger" />
-            :
-              <div/>
+              :
+              <div />
           }
           <div id="or">Or</div>
           <Button variant="danger" size="lg" onClick={() => setCustomOpen(!customOpen)}>Custom input</Button>
           <Collapse in={customOpen}>
             <Form.Group controlId="input-box">
               <Form.Label>Enter items here (one per line)</Form.Label>
-              <Form.Control as="textarea" rows={3} value={fileText} onChange={(e) => handleCustomInput(e)}/>
+              <Form.Control as="textarea" rows={3} value={fileText} onChange={(e) => handleCustomInput(e)} />
             </Form.Group>
           </Collapse>
           {
             !!fileText ?
-            <React.Fragment>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                {/* <DropdownButton size="lg" title={`Results: ${numResults}`} className='drop-button' variant='secondary'>
+              <React.Fragment>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {/* <DropdownButton size="lg" title={`Results: ${numResults}`} className='drop-button' variant='secondary'>
                   {numberOptions}
                 </DropdownButton> */}
-                <Form.Group controlId="number-input-box" style={{marginTop: '1.75rem', width: '10vw'}}>
-                  <Form.Label>Number of results:</Form.Label>
-                  <Form.Control type="text" placeholder={"# Results"} value={numResults} onChange={(e) => handleNumResults(e)}/>
-                </Form.Group>
-                <React.Fragment>
-                  {
-                    showNumResultsError ?
-                      <div style={{marginTop: '1rem'}}>* Please choose a value in the range 1-1000</div>
-                      :
-                      <div/>
-                  }
-                </React.Fragment>
-                <Button variant="secondary" size="lg" onClick={() => setAdvancedOpen(!advancedOpen)} style={{marginTop: '1.75rem'}}>Advanced</Button>
-                <Collapse in={advancedOpen} aria-controls="example-collapse-text">
-                  <div>
-                    <div id="example-collapse-text" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <input type="checkbox" value={includeTotal} onChange={() => setIncludeTotal(!includeTotal)} style={{marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem'}}/>
-                      <div style={{marginTop: '1.75rem'}}>Find the number of Google Shopping results for each item</div>
-                    </div>
-                    <div id="example-collapse-text" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <input type="checkbox" value={includeStats} onChange={() => setIncludeStats(!includeStats)} style={{marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem'}}/>
-                      <div style={{marginTop: '1.75rem'}}>Include statistics (Median, Std dev, etc)</div>
-                    </div>
-                    <div id="example-collapse-text" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <input type="checkbox" value={includeME} onChange={() => setIncludeME(!includeME)} style={{marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem'}}/>
-                      <div style={{marginTop: '1.75rem'}}>Get margin of error for 95% confidence level</div>
-                    </div>
-                    <div id="example-collapse-text" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <input type="checkbox" value={includeCL} onChange={() => setIncludeCL(!includeCL)} style={{marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem'}}/>
-                      <div style={{marginTop: '1.75rem'}}>Get confidence level (2-sided Z-score) for 5% margin of error</div>
-                    </div>
-                    <div id="example-collapse-text" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <input type="checkbox" value={includeSS} onChange={() => setIncludeSS(!includeSS)} style={{marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem'}}/>
-                      <div style={{marginTop: '1.75rem'}}>Get sample size needed for 95% confidence level and 5% margin of error</div>
-                    </div>
-                  </div>
-                </Collapse>
-              </div>
-              {
-                scraping ?
-                  <Spinner animation="border" variant="danger" style={{marginTop: '2rem'}}/>
-                :
+                  <Form.Group controlId="number-input-box" style={{ marginTop: '1.75rem', width: '10vw' }}>
+                    <Form.Label>Number of results:</Form.Label>
+                    <Form.Control type="text" placeholder={"# Results"} value={numResults} onChange={(e) => handleNumResults(e)} />
+                  </Form.Group>
                   <React.Fragment>
                     {
                       showNumResultsError ?
-                      <div/>
-                      :
-                      <React.Fragment>
-                        {
-                          !!returnData ?
-                            <React.Fragment>
-                              {
-                                googleError ?
-                                  <div style={{marginTop: '2rem'}}>Sorry, too many Google Shopping requests have been sent. Please try again in about 15 minutes.</div>
-                                  :
-                                  <Button variant="danger" size="lg" id="go-button" onClick={() => downloadResults()}>Download Results</Button>
-                              }
-                            </React.Fragment>
-                          :
-                            <Button variant="danger" size="lg" id="go-button" onClick={() => doScraping()}>Go!</Button>
-                        }
-                      </React.Fragment>
+                        <div style={{ marginTop: '1rem' }}>* Please choose a value in the range 1-1000</div>
+                        :
+                        <div />
                     }
                   </React.Fragment>
-              }
-            </React.Fragment>
-            :
-            <div/>
+                  <Button variant="secondary" size="lg" onClick={() => setAdvancedOpen(!advancedOpen)} style={{ marginTop: '1.75rem' }}>Advanced</Button>
+                  <Collapse in={advancedOpen} aria-controls="example-collapse-text">
+                    <div>
+                      <div id="example-collapse-text" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <input type="checkbox" value={includeTotal} onChange={() => setIncludeTotal(!includeTotal)} style={{ marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem' }} />
+                        <div style={{ marginTop: '1.75rem' }}>Find the number of Google Shopping results for each item</div>
+                      </div>
+                      <div id="example-collapse-text" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <input type="checkbox" value={includeStats} onChange={() => setIncludeStats(!includeStats)} style={{ marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem' }} />
+                        <div style={{ marginTop: '1.75rem' }}>Include statistics (Median, Std dev, etc)</div>
+                      </div>
+                      <div id="example-collapse-text" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <input type="checkbox" value={includeME} onChange={() => setIncludeME(!includeME)} style={{ marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem' }} />
+                        <div style={{ marginTop: '1.75rem' }}>Get margin of error for 95% confidence level</div>
+                      </div>
+                      <div id="example-collapse-text" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <input type="checkbox" value={includeCL} onChange={() => setIncludeCL(!includeCL)} style={{ marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem' }} />
+                        <div style={{ marginTop: '1.75rem' }}>Get confidence level (2-sided Z-score) for 5% margin of error</div>
+                      </div>
+                      <div id="example-collapse-text" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <input type="checkbox" value={includeSS} onChange={() => setIncludeSS(!includeSS)} style={{ marginLeft: '1rem', marginRight: '0.2rem', marginTop: '1.75rem' }} />
+                        <div style={{ marginTop: '1.75rem' }}>Get sample size needed for 95% confidence level and 5% margin of error</div>
+                      </div>
+                    </div>
+                  </Collapse>
+                </div>
+                {
+                  scraping ?
+                    <Spinner animation="border" variant="danger" style={{ marginTop: '2rem' }} />
+                    :
+                    <React.Fragment>
+                      {
+                        showNumResultsError ?
+                          <div />
+                          :
+                          <React.Fragment>
+                            {
+                              !!returnData ?
+                                <React.Fragment>
+                                  {
+                                    googleError ?
+                                      <div style={{ marginTop: '2rem' }}>Sorry, too many Google Shopping requests have been sent. Please try again in about 15 minutes.</div>
+                                      :
+                                      <Button variant="danger" size="lg" id="go-button" onClick={() => downloadResults()}>Download Results</Button>
+                                  }
+                                </React.Fragment>
+                                :
+                                <Button variant="danger" size="lg" id="go-button" onClick={() => doScraping()}>Go!</Button>
+                            }
+                          </React.Fragment>
+                      }
+                    </React.Fragment>
+                }
+              </React.Fragment>
+              :
+              <div />
           }
         </div>
       </div>
       <div className="section black" id="help">
         <div className="text-container">
-          <div style={{fontSize: '3rem'}}>Welcome to Costing Helper!</div><br/>
+          <div style={{ fontSize: '3rem' }}>Welcome to Costing Helper!</div><br />
           Costing Helper is a tool that lets you cost items faster by automatically searching Google Shopping.
-          <br/>The steps are super simple:<br/><br/>
+          <br />The steps are super simple:<br /><br />
           <ol>
             <li>Upload a file with your items listed 1 per line (or type them in the custom input box)</li>
             <li>Choose the number of each item you would like to include in the report</li>
             <li>Hit 'Go!'</li>
             <li>Download the text file with your results</li>
           </ol>
-          <br/>
+          <br />
           Some things to note:
-          <br/>
+          <br />
           <ul>
-            <li>Since this site is making requests to Google Shopping, any variability in Google Shopping results will affect 
+            <li>Since this site is making requests to Google Shopping, any variability in Google Shopping results will affect
               the results you receive through Costing Helper.
             </li>
             <li>Understanding how Google Shopping works is above my paygrade. If you get whacky stuff –– for example, two different runs
               for the same item may give different results –– don't panic! This is normal, Google Shopping is just weird.
             </li>
             <li>
-              Also, searches are made with the location of 
-              Virginia, since that is where the server is located, so this should be the location that shipping prices are based on. 
+              Also, searches are made with the location of
+              Virginia, since that is where the server is located, so this should be the location that shipping prices are based on.
               Unfortunately, there is currently no way to make requests from a different location (that I know of).
             </li>
             <li>
@@ -337,14 +338,14 @@ function App() {
               giving different results for each request.
             </li>
             <li>
-              Some of the advanced options require making a lot more requests, and could possibly result in too many requests being made to 
+              Some of the advanced options require making a lot more requests, and could possibly result in too many requests being made to
               Google Shopping. I'm experimenting with adding these in, please let me know if they aren't behaving like they should!
             </li>
           </ul>
-          <br/>
-          <br/>
+          <br />
+          <br />
           Please <a className="link" href="mailto:pokerrangecalculator@gmail.com">reach out</a> if you have any problems or ideas for improving the site! Ideas could be something like
-          <br/><ul>
+          <br /><ul>
             <li>Support for CSV files for input/output</li>
             <li>Being able to search for more than 20 of each item</li>
             <li>A menu that lets you select which results to keep and which to drop</li>
@@ -354,8 +355,8 @@ function App() {
         </div>
         <div className="section grey" id="about">
           <div className="text-container">
-            This website was built by <a className="link" href="https://www.rhett-owen.com/" target="_blank" rel="noreferrer">Rhett Owen</a>. <br/><br/>
-            I'm a college student and I make websites like this one for fun. I don't get paid for these, so if you found this website helpful and want to support me, please consider donating! 
+            This website was built by <a className="link" href="https://www.rhett-owen.com/" target="_blank" rel="noreferrer">Rhett Owen</a>. <br /><br />
+            I'm a college student and I make websites like this one for fun. I don't get paid for these, so if you found this website helpful and want to support me, please consider donating!
           </div>
           <a className="link" target="_blank" rel="noreferrer" href="https://www.paypal.com/donate?hosted_button_id=49TCZW9KZNMZ4">
             <div id="paypal-button">
