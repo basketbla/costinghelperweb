@@ -37,9 +37,10 @@ function App() {
   const [includeSS, setIncludeSS] = useState(false);
   const [googleError, setGoogleError] = useState(false);
 
-  const nodeUrl = 'https://costinghelper.uc.r.appspot.com';
+  // const nodeUrl = 'https://costinghelper.uc.r.appspot.com';
   // const nodeUrl = 'https://guarded-ridge-80100.herokuapp.com';
   // const nodeUrl = 'http://localhost:8080';
+  const nodeUrl = 'https://costinghelper-node-backend.onrender.com';
 
   //Actually sends post request to node server
   const doScraping = () => {
